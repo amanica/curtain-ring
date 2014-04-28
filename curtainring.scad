@@ -18,13 +18,24 @@
 
 
 // Global Parameters
-rd = 70;         // Diameter of ring
+
+inside_ring_diameter = 55;
+
 rt = 10;         // Thickness of ring
+rd = inside_ring_diameter + rt;         // Diameter of center of ring
+
+zcrop = 0.4;       // Crop bottom say 0.3mm to make it more printable, or print a raft
+final_height = rt - 2* zcrop;
+
 ld = rt;         // Lug diameter
-lt = 3;          // Lug thickness
-hd = ld * 0.6;   // Hole diameter
-zcrop = 0;       // Crop bottom say 0.3mm to make it more printable, or print a raft
+lt = 5;          // Lug thickness
+hd = 4; //(ld - 2 * zcrop) * 0.6;   // Hole diameter
+margin = 1;
+
 precision = 200; // Circular precision
+second_hole_xoffset = hd/2;
+lug_xoffset = ld +1- second_hole_xoffset ;
+
 
 module curtainring() {
 
@@ -39,7 +50,7 @@ module curtainring() {
                 translate([ rd/2, 0, ld/2])
                     rotate([90,0,0])
                     cylinder( h = lt, r = ld/2, $fn = precision );
-                translate([ rd/2 + ld, 0, ld/2])
+                translate([ rd/2 + lug_xoffset, 0, ld/2])
                     rotate([90,0,0])
                     cylinder( h = lt, r = ld/2, $fn = precision );
             }
@@ -47,12 +58,18 @@ module curtainring() {
 
         // Things to be cut out
         union() {
-            translate([ rd/2 + ld, 0, ld/2])
+            translate([ rd/2 + lug_xoffset, margin, ld/2])
                 rotate([90,0,0])
-                cylinder( h = lt, r = hd/2, $fn = precision );
+                cylinder( h = lt +2*margin, r = hd/2, $fn = precision );
+			translate([ rd/2 + lug_xoffset - second_hole_xoffset, 2*margin, ld/2])
+                rotate([90,0,0])
+                cylinder( h = lt + 4*margin, r = hd/2, $fn = precision );
+			translate([ rd/2 + lug_xoffset - second_hole_xoffset, -ld/2-3*margin, rt/2 - hd/2])
+                cube( [second_hole_xoffset,lt + 6*margin,hd] );
             translate( [-rd, -rd, -rt + zcrop] )
                 cube( [rd * 2, rd * 2, rt] );
-
+            translate( [-rd, -rd, rt - zcrop] )
+                cube( [rd * 2, rd * 2, rt] );
         }
     }
 
