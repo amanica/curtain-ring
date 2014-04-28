@@ -35,9 +35,7 @@ margin = 1;
 precision = 200; // Circular precision
 first_lug_hole_xoffset = 1;
 second_hole_xoffset = hd/2 + first_lug_hole_xoffset;
-lug_xoffset = ld/2 + hd + first_lug_hole_xoffset
-	-0.25; // chop off a little from the ring to make the holes on the sides close to flush
-
+lug_xoffset = ld/2 + hd + first_lug_hole_xoffset;
 
 module curtainring() {
 
@@ -49,10 +47,10 @@ module curtainring() {
                 translate([rd/2, rt/2, 0])
                     circle( r = rt/2 );
             hull() {
-                translate([ rd/2, 0, ld/2])
+                translate([ rd/2, lt/2, ld/2])
                     rotate([90,0,0])
                     cylinder( h = lt, r = ld/2, $fn = precision );
-                translate([ rd/2 + lug_xoffset, 0, ld/2])
+                translate([ rd/2 + lug_xoffset, lt/2, ld/2])
                     rotate([90,0,0])
                     cylinder( h = lt, r = ld/2, $fn = precision );
             }
@@ -61,15 +59,15 @@ module curtainring() {
         // Things to be cut out
         union() {
             // first lug hole
-            translate([ rd/2 + lug_xoffset - first_lug_hole_xoffset, margin, ld/2])
+            translate([ rd/2 + lug_xoffset - first_lug_hole_xoffset, lt/2 + margin, ld/2])
                 rotate([90,0,0])
                 cylinder( h = lt +2*margin, r = hd/2, $fn = precision );
             // second lug hole
-            translate([ rd/2 + lug_xoffset - second_hole_xoffset, 2*margin, ld/2])
+            translate([ rd/2 + lug_xoffset - second_hole_xoffset, lt/2 + 2*margin, ld/2])
                 rotate([90,0,0])
                 cylinder( h = lt + 4*margin, r = hd/2, $fn = precision );
             // little ears between lug holes
-            translate([ rd/2 + lug_xoffset - second_hole_xoffset , -ld/2-3*margin, rt/2 - hd/2])
+            translate([ rd/2 + lug_xoffset - second_hole_xoffset ,- lt/2 -3*margin, rt/2 - hd/2])
                 cube( [second_hole_xoffset - first_lug_hole_xoffset,lt + 6*margin,hd] );
 
             // zcrop top
