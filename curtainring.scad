@@ -21,19 +21,19 @@
 
 inside_ring_diameter = 55;
 
-rt = 10;         // Thickness of ring
+rt = 9;         // Thickness of ring
 rd = inside_ring_diameter + rt;         // Diameter of outside of ring
 
-zcrop = 0.4;       // Crop bottom say 0.3mm to make it more printable, or print a raft
+zcrop = 0.2;       // Crop bottom say 0.3mm to make it more printable, or print a raft
 final_height = rt - 2* zcrop;
 
 ld = rt;         // Lug diameter
 lt = 5;          // Lug thickness
-hd = 4; //(ld - 2 * zcrop) * 0.6;   // Hole diameter
+hd = 3.5;
 margin = 1;
 
 precision = 200; // Circular precision
-first_lug_hole_xoffset = 1;
+first_lug_hole_xoffset = 1; // make the weakest part of the print a little stronger
 second_hole_xoffset = hd/2 + first_lug_hole_xoffset;
 lug_xoffset = ld/2 + hd + first_lug_hole_xoffset;
 
